@@ -33,15 +33,20 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { CalendarIcon } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { format } from "date-fns"; // Add date-fns for date formatting
 import { cn } from "@/lib/utils"; // Ensure you have this utility
+import { useDispatch } from "react-redux";
+import { addTask } from "@/redux/features/task/taskSlice";
+import { ITask } from "@/types";
 
 export function AddTaskModal() {
   const form = useForm();
 
-  const onsubmit = (data) => {
-    console.log(data);
+  const dispatch = useDispatch();
+
+  const onSubmit : SubmitHandler<FieldValues> = (data) => {
+    dispatch(addTask(data as ITask));
   };
 
   return (
@@ -57,10 +62,10 @@ export function AddTaskModal() {
           <DialogTitle>Add Task</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form className="space-y-3" onSubmit={form.handleSubmit(onsubmit)}>
+          <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
-              name="Title"
+              name="title"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Title</FormLabel>
